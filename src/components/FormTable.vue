@@ -1,7 +1,7 @@
 <template>
   <div id="form-table">
-    <el-form :model="formData">
-      <el-table :data="formData.tableData">
+    <el-form ref="form" :model="formData" @validate="validate">
+      <el-table :data="formData.tableData" border>
         <el-table-column label="id" prop="id">
           <template #default="{row, $index}">
             <el-form-item :prop="'tableData.' + $index + '.id'" :rules="rules.id">
@@ -24,6 +24,7 @@
         </el-table-column>
       </el-table>
     </el-form>
+    <el-button @click="submit">提交</el-button>
   </div>
 </template>
 
@@ -32,6 +33,7 @@ export default {
   name: 'FormTable',
   data() {
     return {
+      err: 'qq',
       formData: {
         tableData: [
           { id: 1, name: 'codervae', age: 19 }
@@ -39,13 +41,14 @@ export default {
       },
       rules: {
         id: [
-          { required: true, message: '请输入id', trigger: 'change' }
+          { required: true, message: '请输入id', trigger: 'blur' }
         ],
         name: [
           { required: true, message: '请输入名称', trigger: 'blur' },
           { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
         ]
-      }
+      },
+      validateIndex: []
     }
   },
   methods: {
@@ -54,14 +57,28 @@ export default {
     },
     removeRow(index) {
       this.formData.tableData.splice(index, 1)
+    },
+    submit() {
+      this.$refs.form.validate((res, obj) => {
+        console.log(res, obj)
+        // const index = Number(obj.split('.')[1])
+        // this.validate.push(index)
+      })
     }
   }
-
 }
 </script>
 
-<style>
+<style scoped>
 #form-table {
   width: 800px;
+  margin: 0 auto;
+}
+::v-deep.el-form-item {
+  margin: 17px 0;
+  margin: 0;
+}
+::v-deep .el-form-item__content .el-form-item__error {
+  position: static;
 }
 </style>
