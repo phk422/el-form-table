@@ -75,7 +75,6 @@ export default {
   margin: 0 auto;
 }
 ::v-deep.el-form-item {
-  margin: 17px 0;
   margin: 0;
 }
 ::v-deep .el-form-item__content .el-form-item__error {
